@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
@@ -57,7 +57,7 @@ const OCRScreenPage: React.FC = () => {
         } as any);
 
         try {
-            const ocrResponse = await axios.post('http://10.106.21.33:5000/ocr', formData, {
+            const ocrResponse = await axios.post('http://192.168.1.52:5000/ocr', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -72,7 +72,7 @@ const OCRScreenPage: React.FC = () => {
 
     const handleTranslate = async (text: string) => {
         try {
-            const translateResponse = await axios.post('http://10.106.21.33:5000/translate', {
+            const translateResponse = await axios.post('http://192.168.1.52:5000/translate', {
                 text: text,
                 targetLanguage: targetLanguage,
             });
@@ -87,14 +87,17 @@ const OCRScreenPage: React.FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.header}>OCR Screen Page</Text>
-            <TouchableOpacity style={styles.button} onPress={pickImage}>
-                <Text style={styles.buttonText}>Pick an Image</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={openCamera}>
-                <Text style={styles.buttonText}>Open Camera</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={pickImage}>
+                    <Text style={styles.buttonText}>Pick an Image</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={openCamera}>
+                    <Text style={styles.buttonText}>Open Camera</Text>
+                </TouchableOpacity>
+            </View>
             {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
             <View style={styles.pickerContainer}>
+                <Text style={styles.pickerLabel}>Select Language:</Text>
                 <Picker
                     selectedValue={targetLanguage}
                     style={styles.picker}
@@ -121,14 +124,19 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         padding: 20,
-        backgroundColor: '#1c1c1c',
+        backgroundColor: '#f0f0f0',
         alignItems: 'center',
     },
     header: {
-        fontSize: 24,
-        color: '#fff',
+        fontSize: 28,
+        color: '#333',
         fontWeight: 'bold',
         marginVertical: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
     },
     button: {
         backgroundColor: '#1e88e5',
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         marginVertical: 10,
-        width: '80%',
+        width: '40%',
     },
     buttonText: {
         color: '#fff',
@@ -150,25 +158,35 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     pickerContainer: {
-        backgroundColor: '#333',
+        backgroundColor: '#fff',
         borderRadius: 8,
         marginVertical: 10,
         width: '80%',
+        padding: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
+    },
+    pickerLabel: {
+        fontSize: 16,
+        color: '#333',
+        marginBottom: 5,
     },
     picker: {
-        height: 50,
-        color: '#fff',
+        height: Platform.OS === 'ios' ? 200 : 50,
+        width: '100%',
     },
     translatedTextBox: {
-        backgroundColor: '#2c2c2c',
+        backgroundColor: '#fff',
         borderRadius: 8,
         padding: 20,
         marginVertical: 20,
-        width: '80%',
+        width: '100%',
+        borderColor: '#ccc',
+        borderWidth: 1,
     },
     translatedText: {
         fontSize: 16,
-        color: '#fff',
+        color: '#333',
     },
 });
 

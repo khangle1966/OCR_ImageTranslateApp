@@ -1,11 +1,20 @@
-import { Tabs } from "expo-router";
+import { Tabs } from 'expo-router';
 
-export default function Layout() {
+export default function TabsLayout() {
   return (
     <Tabs>
-      <Tabs.Screen name="index" options={{ title: "Home" }} />
-      <Tabs.Screen name="translator" options={{ title: "Translator Page" }} />
-      <Tabs.Screen name="ocr" options={{ title: "OCR Screen Page" }} />
+      <Tabs.Screen
+        name="index"
+        options={{ tabBarLabel: 'Home' }}
+      />
+      <Tabs.Screen
+        name="ocr"
+        options={{ tabBarLabel: 'OCR' }}
+      />
+      <Tabs.Screen
+        name="translator"
+        options={{ tabBarLabel: 'Translator' }}
+      />
     </Tabs>
   );
 }

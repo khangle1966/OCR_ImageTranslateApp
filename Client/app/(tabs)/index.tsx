@@ -5,6 +5,8 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Welcome to the Home Page</Text>
+
+
             <Link href="/translator" style={styles.link}>
                 Go to Translator Page
             </Link>

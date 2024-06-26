@@ -9,7 +9,7 @@ const TranslatorPage: React.FC = () => {
     const [translatedText, setTranslatedText] = useState<string>('');
 
     const handleTranslate = () => {
-        axios.post('http://10.106.21.33:5000/translate', { text, targetLanguage })
+        axios.post('http://192.168.1.52:5000/translate', { text, targetLanguage })
             .then(response => {
                 setTranslatedText(response.data.translatedText);
             })
